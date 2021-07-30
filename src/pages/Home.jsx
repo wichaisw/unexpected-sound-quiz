@@ -1,7 +1,7 @@
 import React from 'react';
 import PrimaryButton from '../components/PrimaryButton';
 import { Link } from "react-router-dom";
-import hero from '../assets/suspect.png';
+import hero from '../assets/images/suspect.png';
 
 
 export default function Home() {
