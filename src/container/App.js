@@ -8,6 +8,7 @@ import {
 import QuestionPage from '../pages/Question';
 import HomePage from '../pages/Home';
 import Navbar from '../components/Navbar';
+import Result from '../pages/Result.jsx';
 
 function App() {
   return (
@@ -20,6 +21,9 @@ function App() {
           </Route>
           <Route exact path="/main">
             <HomePage />
+          </Route>
+          <Route exact path="/result">
+            <Result />
           </Route>
           <Redirect
             to={{

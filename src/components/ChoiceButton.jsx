@@ -16,11 +16,12 @@ export default function ChoiceButton(props) {
 
   const onChoiceSelected = () => {
     setIsSelectedChoice(true);
-    props.setIsAnswered(true);
+    props.setUserAnswer(props.index);
+    props.onAnswered();
   }
 
   return (
-    <button onClick={() => onChoiceSelected()} className={`${isCorrectAnswer ? 'bg-yellow-600' : 'bg-yellow-400'} hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded`}>
+    <button onClick={() => onChoiceSelected()} className={`${isCorrectAnswer ? 'bg-green-500' : 'bg-yellow-400'} hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded`}>
     
       <span>{props.text}</span>
     </button>
