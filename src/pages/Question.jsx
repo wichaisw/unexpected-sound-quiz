@@ -7,28 +7,41 @@ import PrimaryButton from '../components/PrimaryButton';
 
 export default function Question() {
   const [ isAnswered, setIsAnswered ] = useState();
-  const [ currentQuestion, setCurrentQuestion ] = useState({value: 0});
+  const [ currentQuestion, setCurrentQuestion ] = useState(0);
+  const [ isVideoLoading, setIsVideoLoading ] = useState();
 
   useEffect(() => {
-
+    setCurrentQuestion(0);
+    randomQuestion();
   }, [])
+  
+  const renderNextQuestion = () => {
+    setIsAnswered(false);
+    randomQuestion();
+  }
 
-  const onChoiceSelected = () => {
-    console.log('clicked');
-    setIsAnswered(true);
-
-    console.log(isAnswered );
+  const randomQuestion = () => {
+    setCurrentQuestion(Math.floor(Math.random() * questionList.length));
   }
 
   return (
-    <div className="flex flex-col w-full min-h-screen items-center justify-center">
+    <div className="flex flex-col w-full min-h-screen items-center justify-center bg-black">
       <h1>Question</h1>
 
       {
         isAnswered
-        ? <ReactPlayer url={questionList[0].videoUrl} />
+        ? (
+          <>
+            <ReactPlayer
+              url={questionList[currentQuestion].videoUrl} 
+              // onBuffer={() => setIsVideoLoading(true)} 
+            />
+            {/* isVideoLoading ? <span className="text-white">...Loading</span> : null */}
+          </>
+        )
+        
         : <ReactAudioPlayer
-            src={questionList[0].audioUrl}
+            src={questionList[currentQuestion].audioUrl}
             autoPlay
             controls
           />
@@ -36,13 +49,20 @@ export default function Question() {
 
       <div className="flex space-x-2 p-4">
         {questionList[0].choices.map((value, index) => {
-            return (<ChoiceButton setIsAnswered={setIsAnswered} text={value} key={`${questionList[currentQuestion]}-${index}`} />)      
+            return (<ChoiceButton 
+              answer={questionList[currentQuestion].answer} 
+              index={index} 
+              isAnswered={isAnswered}
+              setIsAnswered={setIsAnswered} 
+              text={value} 
+              key={`${questionList[currentQuestion]}-${index}`} 
+            />)      
           })
         }
       </div>
 
       {
-        isAnswered ? <PrimaryButton text="Next" /> : null
+        isAnswered ? <PrimaryButton renderNextQuestion={renderNextQuestion} text="Next" /> : null
       }
     </div>
   )
