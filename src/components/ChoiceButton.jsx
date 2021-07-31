@@ -21,7 +21,7 @@ export default function ChoiceButton(props) {
   }
 
   return (
-    <button onClick={() => onChoiceSelected()} className={`${isCorrectAnswer ? 'bg-green-500' : 'bg-yellow-400'} hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded`}>
+    <button disabled={props.isAnswered} onClick={() => onChoiceSelected()} className={`${isCorrectAnswer ? 'bg-green-500' : 'bg-yellow-400'} ${!props.isAnswered ? 'hover:bg-yellow-600' : ''} text-white font-bold py-2 px-4 rounded`}>
       <span>{props.text}</span>
     </button>
   )
