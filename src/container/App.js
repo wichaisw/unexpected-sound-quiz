@@ -1,9 +1,9 @@
 import '../styles/App.css';
 import {
-  BrowserRouter,
   Switch,
   Route,
-  Redirect
+  Redirect,
+  HashRouter
 } from "react-router-dom";
 import QuestionPage from '../pages/Question';
 import HomePage from '../pages/Home';
@@ -13,7 +13,7 @@ import Result from '../pages/Result.jsx';
 function App() {
   return (
     <div className="w-full min-h-screen">
-      <BrowserRouter>
+      <HashRouter>
         <Navbar />
         <Switch>
           <Route exact path="/questions">
@@ -31,7 +31,7 @@ function App() {
             }}
           />
         </Switch>
-      </BrowserRouter>
+      </HashRouter>
     </div>
   );
 }

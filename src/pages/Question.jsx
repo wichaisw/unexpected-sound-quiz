@@ -3,15 +3,14 @@ import ReactPlayer from 'react-player'
 import ReactAudioPlayer from 'react-audio-player';
 import { questionList } from '../shared/questions.js';
 import ChoiceButton from '../components/ChoiceButton';
-import PrimaryButton from '../components/PrimaryButton';
+import NextButton from '../components/NextButton';
 import { useHistory } from "react-router-dom";
 
 export default function Question() {
   let history = useHistory();
 
-  const [ isAnswered, setIsAnswered ] = useState();
+  const [ isAnswered, setIsAnswered ] = useState(false);
   const [ currentQuestion, setCurrentQuestion ] = useState(0);
-  // const [ isVideoLoading, setIsVideoLoading ] = useState();
   const [ counter, setCounter] = useState(1);
   const [ score, setScore ] = useState(0);
   const [ userAnswer, setUserAnswer] = useState(null);
@@ -35,21 +34,19 @@ export default function Question() {
     }
   }, [isAnswered])
   
-  const renderNextQuestion = () => {
+  function renderNextQuestion() {
     questionList.splice(currentQuestion, 1);
     setIsAnswered(false);
     randomQuestion();
   }
 
-  const onAnswered = () => {
+  function onAnswered() {
     setIsAnswered(true);
   }
 
-  const randomQuestion = () => {
+  function randomQuestion() {
     setCurrentQuestion(Math.floor(Math.random() * questionList.length));
   }
-
-
 
   return (
     <div className="flex flex-col w-full min-h-screen bg-black">
@@ -65,9 +62,8 @@ export default function Question() {
             <>
               <ReactPlayer
                 url={questionList[currentQuestion]?.videoUrl} 
-                // onBuffer={() => setIsVideoLoading(true)} 
+                playing={true}
               />
-              {/* isVideoLoading ? <span className="text-white">...Loading</span> : null */}
             </>
           )
           
@@ -84,7 +80,6 @@ export default function Question() {
                 answer={questionList[currentQuestion].answer}
                 index={index} 
                 isAnswered={isAnswered}
-                // setIsAnswered={setIsAnswered} 
                 userAnswer={userAnswer}
                 setUserAnswer={setUserAnswer}
                 onAnswered={onAnswered}
@@ -97,7 +92,8 @@ export default function Question() {
         </div>
 
         {
-          isAnswered ? <PrimaryButton 
+          isAnswered ?
+            <NextButton 
               setCounter={setCounter} 
               renderNextQuestion={renderNextQuestion} 
               text={counter === 5 ? 'View Result' : 'Next'} 
