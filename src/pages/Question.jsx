@@ -8,16 +8,23 @@ import { useHistory } from "react-router-dom";
 
 export default function Question() {
   let history = useHistory();
+  let clonedQuestionList = {...questionList};
 
   const [ isAnswered, setIsAnswered ] = useState(false);
   const [ currentQuestion, setCurrentQuestion ] = useState(0);
+  const [ currentQuestionLength, setCurrentQuestionLength ] = useState(Math.floor(Math.random() * questionList.length));
   const [ counter, setCounter] = useState(1);
   const [ score, setScore ] = useState(0);
   const [ userAnswer, setUserAnswer] = useState(null);
 
   useEffect(() => {
-    setCurrentQuestion(0);
+    clonedQuestionList = {...questionList}
+
+    setCounter(1);
+    // setCurrentQuestion(0);
+    setCurrentQuestionLength(questionList.length)
     randomQuestion();
+    console.log(currentQuestion);
     localStorage.setItem("UNEXPECTED_SOUND_SCORE", 0)
   }, [])
 
@@ -29,15 +36,21 @@ export default function Question() {
   }, [counter])
 
   useEffect(() => {
-    if(isAnswered && userAnswer === questionList[currentQuestion].answer) {
+    if(isAnswered && userAnswer === clonedQuestionList[currentQuestion].answer) {
       setScore(prev => prev + 1);
     }
   }, [isAnswered])
   
   function renderNextQuestion() {
-    questionList.splice(currentQuestion, 1);
+    // clonedQuestionList.splice(currentQuestion, 1);
+    clonedQuestionList[currentQuestion].isSeen = false;
+
+    setCurrentQuestionLength(prev => prev -1)
     setIsAnswered(false);
-    randomQuestion();
+
+    if(counter <= 5) {
+      randomQuestion();
+    }
   }
 
   function onAnswered() {
@@ -45,7 +58,11 @@ export default function Question() {
   }
 
   function randomQuestion() {
-    setCurrentQuestion(Math.floor(Math.random() * questionList.length));
+    let nextIndex = Math.floor(Math.random() * currentQuestionLength);
+    while(clonedQuestionList[nextIndex].isSeen) {
+      nextIndex = Math.floor(Math.random() * currentQuestionLength);
+    }
+    setCurrentQuestion(nextIndex);
   }
 
   return (
@@ -75,7 +92,7 @@ export default function Question() {
         }
 
         <div className="flex space-x-2 p-4">
-          {questionList[currentQuestion].choices.map((value, index) => {
+          {questionList[currentQuestion]?.choices.map((value, index) => {
               return (<ChoiceButton 
                 answer={questionList[currentQuestion].answer}
                 index={index} 
