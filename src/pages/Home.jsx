@@ -11,7 +11,10 @@ export default function Home() {
       <figure className="p-6">
         <img src={hero} alt="hero" className="rounded-full border-black border-2" />
       </figure>
-      <p>คุณหลงมายังเว็บปริศนาแห่งหนึ่ง ทันใดเสียงอิหยังดังขึ้น คุณหันไปพบว่านั่นเป็นเสียงของ...</p>
+      <p className="flex flex-col justify-center items-center">
+        <span>คุณหลงมายังเว็บปริศนาแห่งหนึ่ง</span>
+        <span>ทันใดเสียงอิหยังดังขึ้น คุณหันไปพบว่านั่นเป็นเสียงของ...</span>
+      </p>
       <Link to="/questions" className="z-50 p-2">
         <PrimaryButton text="Come What May" />
       </Link>
